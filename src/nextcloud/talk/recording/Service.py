@@ -194,6 +194,7 @@ class Service:
 
             self._logger.debug("Joining call")
             self._participant.joinCall(self.token)
+            self._logger.debug("test from fork")
 
             if self._stopped.is_set():
                 # Not strictly needed, as if the participant is started or the
