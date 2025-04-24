@@ -14,8 +14,8 @@ services:
     # By default the recording server is reachable through the network "nextcloud-talk-recording"
     # Depending on your setup (if you need to reach the recording server externally for example) you might need
     # to expose the used ports to the host machine, e.g.:
-    #ports:
-    #  - "8000:8000"
+    ports:
+      - "1234:1234"
     networks:
       - nextcloud-talk-recording
 

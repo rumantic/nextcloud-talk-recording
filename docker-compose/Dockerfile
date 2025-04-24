@@ -18,22 +18,20 @@ RUN pip3 install --upgrade requests
 # firefox
 RUN apt-get --assume-yes install firefox firefox-geckodriver
 
-# chromium
-# The phd/chromium repository for Ubuntu is used because since Ubuntu 20.04
-# Chromium is provided as a snap package, and the equivalent PPA has been
-# discontinued.
-RUN echo "deb https://freeshell.de/phd/chromium/focal /" > /etc/apt/sources.list.d/phd-chromium.list
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 869689FE09306074
-RUN apt-get update
-RUN apt-get --assume-yes install chromium
+RUN apt-get --assume-yes install wget
+RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -O /tmp/chromium.deb
+RUN apt-get --assume-yes install /tmp/chromium.deb
+RUN rm /tmp/chromium.deb
 
-COPY ./docker-compose/wrap_chromium_binary /opt/bin/wrap_chromium_binary
-RUN /opt/bin/wrap_chromium_binary
+#COPY ./docker-compose/wrap_chromium_binary /opt/bin/wrap_chromium_binary
+#RUN chmod +x /opt/bin/wrap_chromium_binary
+#RUN /opt/bin/wrap_chromium_binary
+#change
 
 # nextcloud-talk-recording config
 RUN useradd --create-home recording
-COPY server.conf.in /etc/nextcloud-talk-recording/server.conf
-RUN sed --in-place 's/#listen =.*/listen = 0.0.0.0:8000/' /etc/nextcloud-talk-recording/server.conf
+COPY server.conf /etc/nextcloud-talk-recording/server.conf
+RUN sed --in-place 's/#listen =.*/listen = 0.0.0.0:1234/' /etc/nextcloud-talk-recording/server.conf
 
 # Deploy recording server
 RUN mkdir --parents /tmp/recording
