@@ -529,6 +529,13 @@ class Participant():
             )
         ''')
 
+        self.seleniumHelper.execute(f'''
+            console.log('test console.log1111111');
+            OCA.Talk.signalingCallViewMode('{token}');
+        ''')
+
+        # OCA.Talk.signalingCallViewMode('{token}');
+
     def disconnect(self):
         """
         Disconnects from the signaling server.
