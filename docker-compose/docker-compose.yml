@@ -5,6 +5,7 @@ version: "3.9"
 services:
 
   nextcloud-talk-recording:
+    container_name: nextcloud-aio-talk-recording
     build:
       context: ..
       dockerfile: ./docker-compose/Dockerfile
@@ -16,8 +17,11 @@ services:
     # to expose the used ports to the host machine, e.g.:
     ports:
       - "1234:1234"
-    networks:
-      - nextcloud-talk-recording
+    #networks:
+    #  - nextcloud-talk-recording
 
+#networks:
+#  nextcloud-talk-recording:
 networks:
-  nextcloud-talk-recording:
+  default:
+    driver: bridge
