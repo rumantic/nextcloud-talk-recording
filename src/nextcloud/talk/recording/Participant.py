@@ -496,41 +496,21 @@ class Participant():
         self.seleniumHelper.driver.get(self.nextcloudUrl + '/fpin/1351')
         self.seleniumHelper.driver.get(self.nextcloudUrl + '/index.php/call/' + token)
 
-        secret = config.getBackendSecret(self.nextcloudUrl)
-        if secret is None:
-            raise Exception(f"No configured backend secret for {self.nextcloudUrl}")
+        # Тут сделать новое подключение к звонку
 
-        random = token_urlsafe(64)
-        hmacValue = hmac.new(secret.encode(), random.encode(), hashlib.sha256)
+        # Ждем появления кнопки и кликаем по ней
+        from time import sleep
+        sleep(2)  # Лучше заменить на явное ожидание через Selenium, если потребуется
 
-        # If there are several signaling servers configured in Nextcloud the
-        # signaling settings can change between different calls, so they need to
-        # be got just once. The scripts are executed in their own scope, so
-        # values have to be stored in the window object to be able to use them
-        # later in another script.
-        settings = self.seleniumHelper.executeAsync(f'''
-                    window.signalingSettings = await OCA.Talk.signalingGetSettingsForRecording('{token}', '{random}', '{hmacValue.hexdigest()}')
-                    returnResolve(window.signalingSettings)
-                ''')
-
-        secret = config.getSignalingSecret(settings['server'])
-        if secret is None:
-            raise Exception(f"No configured signaling secret for {settings['server']}")
-
-        random = token_urlsafe(64)
-        hmacValue = hmac.new(secret.encode(), random.encode(), hashlib.sha256)
-
-        self.seleniumHelper.executeAsync(f'''
-                    await OCA.Talk.signalingJoinCallForRecording(
-                        '{token}',
-                        window.signalingSettings,
-                        {{
-                            random: '{random}',
-                            token: '{hmacValue.hexdigest()}',
-                            backend: '{self.nextcloudUrl}',
-                        }}
-                    )
-                ''')
+        self.seleniumHelper.execute("""
+            var btn = document.getElementById('call_button');
+            if (btn) {
+                btn.click();
+                console.log('Clicked join call button');
+            } else {
+                console.log('Join call button not found');
+            }
+        """)
 
 
         self.seleniumHelper.execute(f'''
