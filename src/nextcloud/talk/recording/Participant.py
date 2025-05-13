@@ -494,41 +494,6 @@ class Participant():
         # self.seleniumHelper.driver.get(self.nextcloudUrl + '/index.php/call/' + token + '/recording')
         self.seleniumHelper.driver.get(self.nextcloudUrl + '/index.php/call/' + token)
 
-        secret = config.getBackendSecret(self.nextcloudUrl)
-        if secret is None:
-            raise Exception(f"No configured backend secret for {self.nextcloudUrl}")
-
-        random = token_urlsafe(64)
-        hmacValue = hmac.new(secret.encode(), random.encode(), hashlib.sha256)
-
-        # If there are several signaling servers configured in Nextcloud the
-        # signaling settings can change between different calls, so they need to
-        # be got just once. The scripts are executed in their own scope, so
-        # values have to be stored in the window object to be able to use them
-        # later in another script.
-        settings = self.seleniumHelper.executeAsync(f'''
-            window.signalingSettings = await OCA.Talk.signalingGetSettingsForRecording('{token}', '{random}', '{hmacValue.hexdigest()}')
-            returnResolve(window.signalingSettings)
-        ''')
-
-        secret = config.getSignalingSecret(settings['server'])
-        if secret is None:
-            raise Exception(f"No configured signaling secret for {settings['server']}")
-
-        random = token_urlsafe(64)
-        hmacValue = hmac.new(secret.encode(), random.encode(), hashlib.sha256)
-
-        self.seleniumHelper.executeAsync(f'''
-            await OCA.Talk.signalingJoinCallForRecording(
-                '{token}',
-                window.signalingSettings,
-                {{
-                    random: '{random}',
-                    token: '{hmacValue.hexdigest()}',
-                    backend: '{self.nextcloudUrl}',
-                }}
-            )
-        ''')
 
         self.seleniumHelper.execute(f'''
             console.log('test console.log1111111');
