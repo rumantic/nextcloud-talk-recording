@@ -515,6 +515,16 @@ class Participant():
         # Ждем появления второго диалога и снова кликаем по кнопке
         sleep(1)
         self.seleniumHelper.execute("""
+            var close_sidebar_button = document.querySelector('.app-sidebar-header button');
+            if (close_sidebar_button) {
+                close_sidebar_button.click();
+                console.log('Clicked close_sidebar_button');
+            }
+        """)
+
+
+
+        self.seleniumHelper.execute("""
             var btn2 = document.querySelector('.recording-server button');
             if (btn2) {
                 btn2.click();
