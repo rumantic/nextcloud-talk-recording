@@ -515,7 +515,7 @@ class Participant():
         # Ждем появления второго диалога и снова кликаем по кнопке
         sleep(1)
         self.seleniumHelper.execute("""
-            var btn2 = document.querySelector('.recording-server');
+            var btn2 = document.querySelector('.recording-server button');
             if (btn2) {
                 btn2.click();
                 console.log('Clicked join call button (second)');
