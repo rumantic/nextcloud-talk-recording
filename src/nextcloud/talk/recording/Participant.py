@@ -512,6 +512,17 @@ class Participant():
             }
         """)
 
+        # Ждем появления второго диалога и снова кликаем по кнопке
+        sleep(1)
+        self.seleniumHelper.execute("""
+            var btn = document.getElementById('call_button');
+            if (btn) {
+                btn.click();
+                console.log('Clicked join call button (second)');
+            } else {
+                console.log('Join call button not found (second)');
+            }
+        """)
 
         self.seleniumHelper.execute(f'''
             console.log('test console.log1111111');
