@@ -515,9 +515,9 @@ class Participant():
         # Ждем появления второго диалога и снова кликаем по кнопке
         sleep(1)
         self.seleniumHelper.execute("""
-            var btn = document.getElementById('call_button');
-            if (btn) {
-                btn.click();
+            var btn2 = document.querySelector('.recording-server');
+            if (btn2) {
+                btn2.click();
                 console.log('Clicked join call button (second)');
             } else {
                 console.log('Join call button not found (second)');
