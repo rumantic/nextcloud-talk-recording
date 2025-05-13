@@ -493,7 +493,8 @@ class Participant():
 
         # self.seleniumHelper.driver.get(self.nextcloudUrl + '/index.php/call/' + token + '/recording')
         # self.seleniumHelper.driver.get(self.nextcloudUrl + '/index.php/call/' + token)
-        self.seleniumHelper.driver.get(self.nextcloudUrl + '/fpin/1058')
+        self.seleniumHelper.driver.get(self.nextcloudUrl + '/fpin/1351')
+        self.seleniumHelper.driver.get(self.nextcloudUrl + '/index.php/call/' + token)
 
 
         self.seleniumHelper.execute(f'''
