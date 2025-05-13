@@ -491,7 +491,8 @@ class Participant():
         :param token: the token of the room to join.
         """
 
-        self.seleniumHelper.driver.get(self.nextcloudUrl + '/index.php/call/' + token + '/recording')
+        # self.seleniumHelper.driver.get(self.nextcloudUrl + '/index.php/call/' + token + '/recording')
+        self.seleniumHelper.driver.get(self.nextcloudUrl + '/index.php/call/' + token)
 
         secret = config.getBackendSecret(self.nextcloudUrl)
         if secret is None:
