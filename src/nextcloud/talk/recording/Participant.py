@@ -545,6 +545,6 @@ class Participant():
         Disconnects from the signaling server.
         """
 
-        self.seleniumHelper.execute('''
-            OCA.Talk.signalingKill()
-        ''')
+        #self.seleniumHelper.execute('''
+        #    OCA.Talk.signalingKill()
+        #''')
