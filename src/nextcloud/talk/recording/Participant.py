@@ -493,7 +493,7 @@ class Participant():
 
         # self.seleniumHelper.driver.get(self.nextcloudUrl + '/index.php/call/' + token + '/recording')
         # self.seleniumHelper.driver.get(self.nextcloudUrl + '/index.php/call/' + token)
-        self.seleniumHelper.driver.get(self.nextcloudUrl + '/loginAuth/' + owner + '/' + config.getBackendSecret('backend-1'))
+        self.seleniumHelper.driver.get(self.nextcloudUrl + '/loginAuth/' + owner + '/' + config.getBackendSecret(self.nextcloudUrl))
         self.seleniumHelper.driver.get(self.nextcloudUrl + '/index.php/call/' + token)
 
         # Тут сделать новое подключение к звонку
