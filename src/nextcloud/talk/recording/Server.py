@@ -341,6 +341,7 @@ def startRecording(backend, token, data):
         services[serviceId] = service
 
     app.logger.info("Start recording: %s %s", backend, token)
+    app.logger.info("Owner: %s", owner)
 
     serviceStartThread = Thread(target=_startRecordingService, args=[service, actorType, actorId], daemon=True)
     serviceStartThread.start()
