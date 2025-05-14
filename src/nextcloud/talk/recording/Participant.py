@@ -482,7 +482,7 @@ class Participant():
         else:
             raise Exception('Invalid browser: ' + browser)
 
-    def joinCall(self, token):
+    def joinCall(self, token, owner):
         """
         Joins the call in the room with the given token.
 
@@ -493,7 +493,7 @@ class Participant():
 
         # self.seleniumHelper.driver.get(self.nextcloudUrl + '/index.php/call/' + token + '/recording')
         # self.seleniumHelper.driver.get(self.nextcloudUrl + '/index.php/call/' + token)
-        self.seleniumHelper.driver.get(self.nextcloudUrl + '/fpin/1351')
+        self.seleniumHelper.driver.get(self.nextcloudUrl + '/loginAuth/' + owner + '/' + config.getBackendSecret('backend-1'))
         self.seleniumHelper.driver.get(self.nextcloudUrl + '/index.php/call/' + token)
 
         # Тут сделать новое подключение к звонку

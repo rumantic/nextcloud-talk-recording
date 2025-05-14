@@ -196,8 +196,8 @@ class Service:
             self._participant = Participant(browser, self.backend, width, height, env, driverPath, browserPath, self._logger)
 
             self._logger.debug("Joining call")
-            self._participant.joinCall(self.token)
-            self._logger.debug("test from fork")
+            self._participant.joinCall(self.token, self.owner)
+            self._logger.debug("test from fork v 1.2")
 
             if self._stopped.is_set():
                 # Not strictly needed, as if the participant is started or the
