@@ -19,6 +19,9 @@ services:
       - "1234:1234"
     #networks:
     #  - nextcloud-talk-recording
+    privileged: true
+    devices:
+      - /dev/video2:/dev/video2
 
 #networks:
 #  nextcloud-talk-recording:

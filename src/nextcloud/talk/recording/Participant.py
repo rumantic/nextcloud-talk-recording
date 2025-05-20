@@ -225,6 +225,9 @@ class SeleniumHelper:
         options.add_argument('--disable-infobars')
         options.add_experimental_option("excludeSwitches", ["enable-automation"])
 
+        # Добавляем опцию для эмуляции вебкамеры через файл/устройство
+        options.add_argument('--use-file-for-fake-video-capture=/dev/video2')        
+
         if disk_usage('/dev/shm').free < 2147483648:
             self._logger.info('Less than 2 GiB available in "/dev/shm", usage disabled')
             options.add_argument("--disable-dev-shm-usage")
@@ -484,7 +487,7 @@ class Participant():
 
     def joinCall(self, token, owner):
         """
-        Joins the call in the room with the given token.
+        Joins the call in the room with the given token
 
         The participant will join as an internal client of the signaling server.
 
