@@ -473,6 +473,7 @@ class Participant():
 
         # URL should not contain a trailing '/', as that could lead to a double
         # '/' which may prevent Talk UI from loading as expected.
+        self.ffmpeg_proc = None
         self.nextcloudUrl = nextcloudUrl.rstrip('/')
 
         acceptInsecureCerts = config.getBackendSkipVerify(self.nextcloudUrl)
@@ -556,7 +557,7 @@ class Participant():
         #    OCA.Talk.signalingKill()
         #''')
 
-    def start_ffmpeg_stream(stream_url):
+    def start_ffmpeg_stream(self, stream_url):
         # Остановить предыдущий ffmpeg, если нужно (реализуйте сами)
         # Запустить новый ffmpeg для нового стрима
         cmd = [
