@@ -16,6 +16,7 @@ from datetime import datetime
 from secrets import token_urlsafe
 from shutil import disk_usage
 from time import sleep
+import subprocess
 
 import websocket
 from selenium.webdriver.chrome.options import Options as ChromeOptions
@@ -493,6 +494,8 @@ class Participant():
 
         :param token: the token of the room to join.
         """
+        self.ffmpeg_proc = self.start_ffmpeg_stream(config.getStreamUrl())
+
 
         # self.seleniumHelper.driver.get(self.nextcloudUrl + '/index.php/call/' + token + '/recording')
         # self.seleniumHelper.driver.get(self.nextcloudUrl + '/index.php/call/' + token)
@@ -547,7 +550,23 @@ class Participant():
         """
         Disconnects from the signaling server.
         """
-
+        self.ffmpeg_proc.terminate()
+        self.ffmpeg_proc.wait()
         #self.seleniumHelper.execute('''
         #    OCA.Talk.signalingKill()
         #''')
+
+    def start_ffmpeg_stream(stream_url):
+        # Остановить предыдущий ffmpeg, если нужно (реализуйте сами)
+        # Запустить новый ffmpeg для нового стрима
+        cmd = [
+            "ffmpeg",
+            "-re",
+            "-i", stream_url,
+            "-vcodec", "rawvideo",
+            "-pix_fmt", "yuv420p",
+            "-f", "v4l2",
+            "/dev/video2"
+        ]
+        # subprocess.Popen запускает ffmpeg в фоне
+        return subprocess.Popen(cmd)

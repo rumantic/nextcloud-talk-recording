@@ -45,11 +45,12 @@ RUN rm --recursive --force /tmp/recording
 # v4l2loopback setup (пункт 2)
 RUN modprobe v4l2loopback devices=1 video_nr=2 card_label="VirtualCam" exclusive_caps=1 || true
 
-COPY docker-compose/start.sh /start.sh
-RUN chmod +x /start.sh
+#COPY docker-compose/start.sh /start.sh
+#RUN chmod +x /start.sh
 
 # Switch user and start the recording server
 WORKDIR "/home/recording/"
 USER "recording"
 
-CMD ["/start.sh"]
+#CMD ["/start.sh"]
+CMD ["python3", "-m", "nextcloud.talk.recording", "--config", "/etc/nextcloud-talk-recording/server.conf"]

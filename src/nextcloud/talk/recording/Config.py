@@ -165,6 +165,9 @@ class Config:
         """
         return self._configParser.get('http', 'listen', fallback='127.0.0.1:8000')
 
+    def getStreamUrl(self):
+        return self._configParser.get('stream', 'stream_url', fallback='')
+
     def getTrustedProxies(self):
         """
         Returns the list of trusted proxies.
