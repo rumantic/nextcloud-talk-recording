@@ -583,7 +583,7 @@ class Participant():
             */           
         """)
         from .Server import stopRecording
-        stopRecording(self.nextcloudUrl + '/', token,
+        stopRecording(self.nextcloudUrl, token,
                       {
                           "type": "stop",
                           "stop": []
