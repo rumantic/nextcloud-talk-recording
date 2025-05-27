@@ -582,7 +582,6 @@ class Participant():
             } 
             */           
         """)
-        """
         from .Server import stopRecording
         stopRecording(self.nextcloudUrl + '/', token,
                       {
@@ -590,7 +589,6 @@ class Participant():
                           "stop": []
                       }
                   )
-        """
 
         # 
         # self.seleniumHelper.execute('''
