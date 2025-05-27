@@ -12,6 +12,7 @@ import hmac
 import json
 import re
 import threading
+import time
 from datetime import datetime
 from secrets import token_urlsafe
 from shutil import disk_usage
@@ -479,6 +480,7 @@ class Participant():
         acceptInsecureCerts = config.getBackendSkipVerify(self.nextcloudUrl)
 
         self.seleniumHelper = SeleniumHelper(parentLogger, acceptInsecureCerts)
+        self._logger = parentLogger.getChild('SeleniumHelper')
 
         if browser == 'chrome':
             self.seleniumHelper.startChrome(width, height, env, driverPath, browserPath)
@@ -544,6 +546,7 @@ class Participant():
         self.seleniumHelper.execute(f'''
             console.log('test console.log1111111');
         ''')
+        self.wait_for_empty_call_and_stop(30, 10)
 
         # OCA.Talk.signalingCallViewMode('{token}');
 
@@ -571,3 +574,28 @@ class Participant():
         ]
         # subprocess.Popen запускает ffmpeg в фоне
         return subprocess.Popen(cmd)
+
+    def wait_for_empty_call_and_stop(self, timeout=300, check_interval=10):
+        """
+        Ожидает появления слоя .empty-call-view в течение timeout секунд.
+        Если слой присутствует всё это время — завершает запись и отключается.
+        """
+        empty_since = None
+
+        while True:
+            is_empty = self.seleniumHelper.execute("""
+                return document.querySelector('.empty-call-view') !== null;
+            """)
+            now = time.time()
+
+            if is_empty:
+                if empty_since is None:
+                    empty_since = now
+                elif now - empty_since >= timeout:
+                    self._logger.debug("There are nobody in call. Disconnect.")
+                    self.disconnect()
+                    break
+            else:
+                empty_since = None  # Сброс, если кто-то вернулся
+
+            time.sleep(check_interval)
