@@ -28,6 +28,7 @@ from selenium.webdriver.firefox.service import Service as FirefoxService
 from selenium.webdriver.firefox.webdriver import WebDriver as FirefoxDriver
 
 from .Config import config
+from .Server import stopRecording
 
 
 class BiDiLogsHelper:
@@ -582,7 +583,6 @@ class Participant():
             } 
             */           
         """)
-        from .Server import stopRecording
         stopRecording(self.nextcloudUrl, token,
                       {
                           "type": "stop",
