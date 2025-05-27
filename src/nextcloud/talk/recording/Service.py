@@ -136,7 +136,7 @@ class Service:
         self._fileName = None
 
     def __del__(self):
-        self._stopHelpers(self.token)
+        self._stopHelpers()
 
     def start(self, actorType, actorId):
         """
@@ -237,7 +237,7 @@ class Service:
             if returnCode != 255:
                 raise Exception("recorder ended unexpectedly")
         except Exception:
-            self._stopHelpers(self.token)
+            self._stopHelpers()
 
             if self._stopped.is_set() and not self._started.is_set():
                 # If the service fails before being started but it was already
@@ -270,7 +270,7 @@ class Service:
 
         self._stopped.set()
 
-        self._stopHelpers(self.token)
+        self._stopHelpers()
 
         BackendNotifier.stopped(self.backend, self.token, actorType, actorId)
 
@@ -288,7 +288,7 @@ class Service:
 
         os.remove(self._fileName)
 
-    def _stopHelpers(self, token):
+    def _stopHelpers(self):
         if self._process:
             self._logger.debug("Stopping recorder")
             try:
@@ -302,7 +302,7 @@ class Service:
         if self._participant:
             self._logger.debug("Disconnecting from signaling server")
             try:
-                self._participant.disconnect(token)
+                self._participant.disconnect()
             except:
                 self._logger.exception("Error when disconnecting from signaling server")
             finally:

@@ -28,8 +28,6 @@ from selenium.webdriver.firefox.service import Service as FirefoxService
 from selenium.webdriver.firefox.webdriver import WebDriver as FirefoxDriver
 
 from .Config import config
-from .State import connected_participants
-
 
 class BiDiLogsHelper:
     """
@@ -540,7 +538,6 @@ class Participant():
             if (btn2) {
                 btn2.click();
                 console.log('Clicked join call button (second)');
-                // установить глобальное состояние                                    
             } else {
                 console.log('Join call button not found (second)');
             }
@@ -549,21 +546,16 @@ class Participant():
         self.seleniumHelper.execute(f'''
             console.log('test console.log1111111');
         ''')
-
-        connected_participants[token] = True
-        
-        self.wait_for_empty_call_and_stop(token,30, 10)
+        self.wait_for_empty_call_and_stop(30, 10)
 
         # OCA.Talk.signalingCallViewMode('{token}');
 
-    def disconnect(self, token):
+    def disconnect(self):
         """
         Disconnects from the signaling server.
         """
         self.ffmpeg_proc.terminate()
         self.ffmpeg_proc.wait()
-
-
 
         self.seleniumHelper.execute("""
             var hangupBtn = Array.from(document.querySelectorAll('button')).find(btn =>
@@ -572,30 +564,21 @@ class Participant():
             if (hangupBtn) {
                 hangupBtn.click();
                 console.log('Clicked hangup button');
-                
-                // Тут добавить паузу 1 секунду
-                setTimeout(function() {
-                    var offBtn = Array.from(document.querySelectorAll('button')).find(btn =>
-                        btn.querySelector('.material-design-icon.phone-off-icon')
-                    );
-                    if (offBtn) {
-                        offBtn.click();
-                        console.log('Clicked phone-off button');
-                    } else {
-                        console.log('Phone-off button not found');
-                    }
-                }, 1000);
             } else {
                 console.log('Hangup button not found');
-            }            
-
+            }
             
+            // После этого ищем и кликаем по кнопке с phone-off-icon
+            var offBtn = Array.from(document.querySelectorAll('button')).find(btn =>
+                btn.querySelector('.material-design-icon.phone-off-icon')
+            );
+            if (offBtn) {
+                offBtn.click();
+                console.log('Clicked phone-off button');
+            } else {
+                console.log('Phone-off button not found');
+            }            
         """)
-        sleep(5)
-
-        self._logger.debug(" ------------------- Clear participant state.")
-
-        connected_participants[token] = False
 
         # 
         #self.seleniumHelper.execute('''
@@ -617,7 +600,7 @@ class Participant():
         # subprocess.Popen запускает ffmpeg в фоне
         return subprocess.Popen(cmd)
 
-    def wait_for_empty_call_and_stop(self, token, timeout=300, check_interval=10):
+    def wait_for_empty_call_and_stop(self, timeout=300, check_interval=10):
         """
         Ожидает появления слоя .empty-call-view в течение timeout секунд.
         Если слой присутствует всё это время — завершает запись и отключается.
@@ -635,7 +618,7 @@ class Participant():
                     empty_since = now
                 elif now - empty_since >= timeout:
                     self._logger.debug("There are nobody in call. Disconnect.")
-                    self.disconnect(token)
+                    self.disconnect()
                     break
             else:
                 empty_since = None  # Сброс, если кто-то вернулся

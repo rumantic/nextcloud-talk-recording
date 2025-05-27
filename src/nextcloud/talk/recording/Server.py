@@ -25,7 +25,6 @@ from nextcloud.talk import recording
 from nextcloud.talk.recording import RECORDING_STATUS_AUDIO_AND_VIDEO
 from .Config import config
 from .Service import Service
-from .State import connected_participants
 
 # prometheus_client removes "_total" from the counter name, so "_current" needs
 # to be added to the gauge to prevent a duplicated name.
@@ -276,15 +275,6 @@ def _calculateChecksum(secret, random, body):
     return hmacValue.hexdigest()
 
 def startRecording(backend, token, data):
-
-    """
-    if connected_participants.get(token):
-        app.logger.info(" ---------------- Participant already connected for token %s, skipping start.", token)
-        return {}
-    else:
-        app.logger.info(" ---------------- Participant not connected for token %s, recording can be started.", token)
-    """
-
     """
     Starts the recording in the given backend and room (identified by its
     token).
@@ -414,11 +404,6 @@ def stopRecording(backend, token, data):
     :param token: the token of the room to stop the recording in.
     :param data: the data used to stop the recording.
     """
-
-    import json
-    app.logger.info(" --------------------- stopRecording called with backend=%s, token=%s, data=%s", backend, token,
-                    json.dumps(data, ensure_ascii=False))
-
     serviceId = f'{backend}-{token}'
 
     if 'stop' not in data:
