@@ -302,7 +302,7 @@ class Service:
         if self._participant:
             self._logger.debug("Disconnecting from signaling server")
             try:
-                self._participant.disconnect()
+                self._participant.disconnect(self.token)
             except:
                 self._logger.exception("Error when disconnecting from signaling server")
             finally:
