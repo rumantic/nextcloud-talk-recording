@@ -28,8 +28,6 @@ from selenium.webdriver.firefox.service import Service as FirefoxService
 from selenium.webdriver.firefox.webdriver import WebDriver as FirefoxDriver
 
 from .Config import config
-from .Server import stopRecording
-
 
 class BiDiLogsHelper:
     """
@@ -230,7 +228,7 @@ class SeleniumHelper:
         options.add_experimental_option("excludeSwitches", ["enable-automation"])
 
         # Добавляем опцию для эмуляции вебкамеры через файл/устройство
-        options.add_argument('--use-file-for-fake-video-capture=/dev/video2')
+        options.add_argument('--use-file-for-fake-video-capture=/dev/video2')        
 
         if disk_usage('/dev/shm').free < 2147483648:
             self._logger.info('Less than 2 GiB available in "/dev/shm", usage disabled')
@@ -501,10 +499,10 @@ class Participant():
         """
         self.ffmpeg_proc = self.start_ffmpeg_stream(config.getStreamUrl())
 
+
         # self.seleniumHelper.driver.get(self.nextcloudUrl + '/index.php/call/' + token + '/recording')
         # self.seleniumHelper.driver.get(self.nextcloudUrl + '/index.php/call/' + token)
-        self.seleniumHelper.driver.get(
-            self.nextcloudUrl + '/loginAuth/' + owner + '/' + config.getBackendSecret(self.nextcloudUrl))
+        self.seleniumHelper.driver.get(self.nextcloudUrl + '/loginAuth/' + owner + '/' + config.getBackendSecret(self.nextcloudUrl))
         self.seleniumHelper.driver.get(self.nextcloudUrl + '/index.php/call/' + token)
 
         # Тут сделать новое подключение к звонку
@@ -533,6 +531,8 @@ class Participant():
             }
         """)
 
+
+
         self.seleniumHelper.execute("""
             var btn2 = document.querySelector('.recording-server button');
             if (btn2) {
@@ -546,21 +546,18 @@ class Participant():
         self.seleniumHelper.execute(f'''
             console.log('test console.log1111111');
         ''')
-        self.wait_for_empty_call_and_stop(token, 30, 10)
+        self.wait_for_empty_call_and_stop(30, 10)
 
         # OCA.Talk.signalingCallViewMode('{token}');
 
-    def disconnect(self, token):
+    def disconnect(self):
         """
         Disconnects from the signaling server.
         """
         self.ffmpeg_proc.terminate()
         self.ffmpeg_proc.wait()
 
-
         self.seleniumHelper.execute("""
-            console.log('Maybe later');
-            /*
             var hangupBtn = Array.from(document.querySelectorAll('button')).find(btn =>
                 btn.querySelector('.material-design-icon.phone-hangup-icon')
             );
@@ -580,20 +577,13 @@ class Participant():
                 console.log('Clicked phone-off button');
             } else {
                 console.log('Phone-off button not found');
-            } 
-            */           
+            }            
         """)
-        stopRecording(self.nextcloudUrl, token,
-                      {
-                          "type": "stop",
-                          "stop": []
-                      }
-                  )
 
         # 
-        # self.seleniumHelper.execute('''
+        #self.seleniumHelper.execute('''
         #    OCA.Talk.signalingKill()
-        # ''')
+        #''')
 
     def start_ffmpeg_stream(self, stream_url):
         # Остановить предыдущий ffmpeg, если нужно (реализуйте сами)
@@ -610,7 +600,7 @@ class Participant():
         # subprocess.Popen запускает ffmpeg в фоне
         return subprocess.Popen(cmd)
 
-    def wait_for_empty_call_and_stop(self, token, timeout=300, check_interval=10):
+    def wait_for_empty_call_and_stop(self, timeout=300, check_interval=10):
         """
         Ожидает появления слоя .empty-call-view в течение timeout секунд.
         Если слой присутствует всё это время — завершает запись и отключается.
@@ -628,7 +618,7 @@ class Participant():
                     empty_since = now
                 elif now - empty_since >= timeout:
                     self._logger.debug("There are nobody in call. Disconnect.")
-                    self.disconnect(token)
+                    self.disconnect()
                     break
             else:
                 empty_since = None  # Сброс, если кто-то вернулся
