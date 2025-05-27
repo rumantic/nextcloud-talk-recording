@@ -556,6 +556,31 @@ class Participant():
         """
         self.ffmpeg_proc.terminate()
         self.ffmpeg_proc.wait()
+
+        self.seleniumHelper.execute("""
+            var hangupBtn = Array.from(document.querySelectorAll('button')).find(btn =>
+                btn.querySelector('.material-design-icon.phone-hangup-icon')
+            );
+            if (hangupBtn) {
+                hangupBtn.click();
+                console.log('Clicked hangup button');
+            } else {
+                console.log('Hangup button not found');
+            }
+            
+            // После этого ищем и кликаем по кнопке с phone-off-icon
+            var offBtn = Array.from(document.querySelectorAll('button')).find(btn =>
+                btn.querySelector('.material-design-icon.phone-off-icon')
+            );
+            if (offBtn) {
+                offBtn.click();
+                console.log('Clicked phone-off button');
+            } else {
+                console.log('Phone-off button not found');
+            }            
+        """)
+
+        # 
         #self.seleniumHelper.execute('''
         #    OCA.Talk.signalingKill()
         #''')
