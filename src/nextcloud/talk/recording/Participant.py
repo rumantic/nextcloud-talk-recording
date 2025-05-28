@@ -26,6 +26,7 @@ from selenium.webdriver.chrome.webdriver import WebDriver as ChromeDriver
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from selenium.webdriver.firefox.service import Service as FirefoxService
 from selenium.webdriver.firefox.webdriver import WebDriver as FirefoxDriver
+from selenium.common.exceptions import WebDriverException
 
 from .Config import config
 
@@ -584,9 +585,14 @@ class Participant():
         empty_since = None
 
         while True:
-            is_empty = self.seleniumHelper.execute("""
-                return document.querySelector('.empty-call-view') !== null;
-            """)
+            try:
+                is_empty = self.seleniumHelper.execute("""
+                            return document.querySelector('.empty-call-view') !== null;
+                        """)
+            except WebDriverException as e:
+                self._logger.warning(f"Selenium WebDriver exception in background thread: {e}")
+                break
+
             now = time.time()
 
             if is_empty:
