@@ -602,12 +602,13 @@ class Participant():
                     empty_since = now
                 elif now - empty_since >= timeout:
                     self._logger.debug("There are nobody in call. Disconnect.")
+                    self.disconnect()
+
                     from .Server import stopRecording
                     stopRecording(self.nextcloudUrl + '/', self.token, {
                         "type": "stop",
                         "stop": []
                     })
-                    self.disconnect()
                     break
             else:
                 empty_since = None  # Сброс, если кто-то вернулся
