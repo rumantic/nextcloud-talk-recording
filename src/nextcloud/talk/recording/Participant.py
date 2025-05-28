@@ -476,6 +476,7 @@ class Participant():
         # URL should not contain a trailing '/', as that could lead to a double
         # '/' which may prevent Talk UI from loading as expected.
         self.ffmpeg_proc = None
+        self.token = None
         self.nextcloudUrl = nextcloudUrl.rstrip('/')
 
         acceptInsecureCerts = config.getBackendSkipVerify(self.nextcloudUrl)
@@ -499,6 +500,7 @@ class Participant():
         :param token: the token of the room to join.
         """
         self.ffmpeg_proc = self.start_ffmpeg_stream(config.getStreamUrl())
+        self.token = token
 
 
         # self.seleniumHelper.driver.get(self.nextcloudUrl + '/index.php/call/' + token + '/recording')
@@ -600,6 +602,11 @@ class Participant():
                     empty_since = now
                 elif now - empty_since >= timeout:
                     self._logger.debug("There are nobody in call. Disconnect.")
+                    from .Server import stopRecording
+                    stopRecording(self.nextcloudUrl + '/', self.token, {
+                        "type": "stop",
+                        "stop": []
+                    })
                     self.disconnect()
                     break
             else:
