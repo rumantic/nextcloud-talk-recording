@@ -12,7 +12,7 @@ RUN apt-get --assume-yes upgrade
 RUN apt-get --assume-yes install software-properties-common
 
 # nextcloud-talk-recording dependencies
-RUN apt-get --assume-yes install ffmpeg pulseaudio python3-pip xvfb mc
+RUN apt-get --assume-yes install ffmpeg pulseaudio python3-pip xvfb
 
 # v4l2loopback for virtual webcam (пункт 1)
 RUN apt-get update && apt-get --assume-yes install --fix-missing v4l2loopback-dkms v4l2loopback-utils
