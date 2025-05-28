@@ -546,7 +546,7 @@ class Participant():
         self.seleniumHelper.execute(f'''
             console.log('------------------------- test console.log1111111');
         ''')
-        self.wait_for_empty_call_and_stop(30, 10)
+        # self.wait_for_empty_call_and_stop(30, 10)
 
         # OCA.Talk.signalingCallViewMode('{token}');
 
