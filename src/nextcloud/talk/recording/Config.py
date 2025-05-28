@@ -153,7 +153,7 @@ class Config:
         """
         Returns the log level.
 
-        Defaults to INFO (20).
+        Defaults to INFO (20)
         """
         return int(self._configParser.get('logs', 'level', fallback=logging.INFO))
 

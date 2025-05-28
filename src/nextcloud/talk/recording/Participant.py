@@ -578,7 +578,7 @@ class Participant():
     def wait_for_empty_call_and_stop(self, timeout=300, check_interval=10):
         """
         Ожидает появления слоя .empty-call-view в течение timeout секунд.
-        Если слой присутствует всё это время — завершает запись и отключается.
+        Если слой присутствует всё это время — завершает запись и отключается
         """
         empty_since = None
 

@@ -164,7 +164,7 @@ class Service:
         try:
             # Ensure that PulseAudio is running.
             # A "long" timeout is used to prevent it from exiting before the
-            # call was joined.
+            # call was joined
             subprocess.run(['pulseaudio', '--start', '--exit-idle-time=120'], check=True)
 
             # Ensure that the directory to start the recordings exists.

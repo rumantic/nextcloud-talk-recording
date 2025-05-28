@@ -277,7 +277,7 @@ def _calculateChecksum(secret, random, body):
 def startRecording(backend, token, data):
     """
     Starts the recording in the given backend and room (identified by its
-    token).
+    token)
 
     The data must provide the id of the user that will own the recording once
     uploaded. The data must also provide the type and id of the actor that
