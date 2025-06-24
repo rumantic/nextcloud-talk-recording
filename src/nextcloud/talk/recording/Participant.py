@@ -519,6 +519,7 @@ class Participant():
             if (btn) {
                 console.log(btn);
                 btn.click();
+                btn.click();
                 console.log('Clicked join call button');
             } else {
                 console.log('Join call button not found');
