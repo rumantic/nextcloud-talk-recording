@@ -517,6 +517,7 @@ class Participant():
         self.seleniumHelper.execute("""
             var btn = document.getElementById('call_button');
             if (btn) {
+                console.log(btn);
                 btn.click();
                 console.log('Clicked join call button');
             } else {
@@ -533,7 +534,7 @@ class Participant():
                 console.log('Clicked close_sidebar_button');
             }
         """)
-
+        sleep(1)
 
 
         self.seleniumHelper.execute("""
