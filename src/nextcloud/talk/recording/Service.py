@@ -231,6 +231,8 @@ class Service:
                 # automatically fail, but just in case.
                 raise Exception("Call joined after recording was stopped")
 
+            self._participant.afterJoin()
+
             returnCode = self._process.wait()
 
 

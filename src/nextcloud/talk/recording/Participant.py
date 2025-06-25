@@ -501,7 +501,6 @@ class Participant():
             if (btn) {
                 console.log(btn);
                 btn.click();
-                btn.click();
                 console.log('Clicked join call button');
             } else {
                 console.log('Join call button not found');
@@ -536,8 +535,9 @@ class Participant():
         thread = threading.Thread(target=self.wait_for_empty_call_and_stop, args=(30, 10), daemon=True)
         thread.start()
 
-        self.ffmpeg_proc = self.start_ffmpeg_stream(config.getStreamUrl())
 
+    def afterJoin(self):
+        self.ffmpeg_proc = self.start_ffmpeg_stream(config.getStreamUrl())
 
 
     def joinCall(self, token, owner):
