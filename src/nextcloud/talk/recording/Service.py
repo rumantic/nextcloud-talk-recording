@@ -231,6 +231,8 @@ class Service:
 
             returnCode = self._process.wait()
 
+            self._participant.joinCallviaButtons()
+
             # recorder process will be explicitly terminated when needed, which
             # returns with 255; any other return code means that it ended
             # without an expected reason.

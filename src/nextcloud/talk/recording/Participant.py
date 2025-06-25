@@ -491,25 +491,7 @@ class Participant():
         else:
             raise Exception('Invalid browser: ' + browser)
 
-    def joinCall(self, token, owner):
-        """
-        Joins the call in the room with the given token
-
-        The participant will join as an internal client of the signaling server.
-
-        :param token: the token of the room to join.
-        """
-        self.ffmpeg_proc = self.start_ffmpeg_stream(config.getStreamUrl())
-        self.token = token
-
-
-        # self.seleniumHelper.driver.get(self.nextcloudUrl + '/index.php/call/' + token + '/recording')
-        # self.seleniumHelper.driver.get(self.nextcloudUrl + '/index.php/call/' + token)
-        self.seleniumHelper.driver.get(self.nextcloudUrl + '/loginAuth/' + owner + '/' + config.getBackendSecret(self.nextcloudUrl))
-        self.seleniumHelper.driver.get(self.nextcloudUrl + '/index.php/call/' + token)
-
-        # Тут сделать новое подключение к звонку
-
+    def joinCallviaButtons (self):
         # Ждем появления кнопки и кликаем по ней
         from time import sleep
         sleep(2)  # Лучше заменить на явное ожидание через Selenium, если потребуется
@@ -553,6 +535,25 @@ class Participant():
         ''')
         thread = threading.Thread(target=self.wait_for_empty_call_and_stop, args=(30, 10), daemon=True)
         thread.start()
+
+
+
+    def joinCall(self, token, owner):
+        """
+        Joins the call in the room with the given token
+
+        The participant will join as an internal client of the signaling server.
+
+        :param token: the token of the room to join.
+        """
+        self.ffmpeg_proc = self.start_ffmpeg_stream(config.getStreamUrl())
+        self.token = token
+
+
+        # self.seleniumHelper.driver.get(self.nextcloudUrl + '/index.php/call/' + token + '/recording')
+        # self.seleniumHelper.driver.get(self.nextcloudUrl + '/index.php/call/' + token)
+        self.seleniumHelper.driver.get(self.nextcloudUrl + '/loginAuth/' + owner + '/' + config.getBackendSecret(self.nextcloudUrl))
+        self.seleniumHelper.driver.get(self.nextcloudUrl + '/index.php/call/' + token)
 
         # OCA.Talk.signalingCallViewMode('{token}');
 
