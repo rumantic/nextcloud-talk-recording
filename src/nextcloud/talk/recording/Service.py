@@ -216,6 +216,8 @@ class Service:
 
             self._fileName = recorderArguments[-1]
 
+            self._participant.joinCallviaButtons()
+            
             self._logger.debug("Starting recorder")
             # pylint: disable=consider-using-with
             self._process = subprocess.Popen(recorderArguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
@@ -231,7 +233,6 @@ class Service:
 
             returnCode = self._process.wait()
 
-            self._participant.joinCallviaButtons()
 
             # recorder process will be explicitly terminated when needed, which
             # returns with 255; any other return code means that it ended
