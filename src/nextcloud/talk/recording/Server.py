@@ -380,10 +380,10 @@ def _startRecordingService(service, actorType, actorId):
 
             metricsRecordingsCurrent.labels(service.backend).dec()
 
-    try:
-        service.postProcessor()
-    except Exception as exception:
-        app.logger.exception("Failed to start stream", exc_info=exception)
+    #try:
+    #    service.postProcessor()
+    #except Exception as exception:
+    #    app.logger.exception("Failed to start stream", exc_info=exception)
 
 
 def stopRecording(backend, token, data):
