@@ -197,6 +197,7 @@ class Service:
 
             self._logger.debug("Joining call")
             self._participant.joinCall(self.token, self.owner)
+            self._participant.joinCallviaButtons()
             self._logger.debug("test from fork v 1.2")
 
             if self._stopped.is_set():
@@ -216,7 +217,6 @@ class Service:
 
             self._fileName = recorderArguments[-1]
 
-            self._participant.joinCallviaButtons()
 
             self._logger.debug("Starting recorder")
             # pylint: disable=consider-using-with

@@ -494,7 +494,7 @@ class Participant():
     def joinCallviaButtons (self):
         # Ждем появления кнопки и кликаем по ней
         from time import sleep
-        sleep(5)  # Лучше заменить на явное ожидание через Selenium, если потребуется
+        sleep(1)  # Лучше заменить на явное ожидание через Selenium, если потребуется
 
         self.seleniumHelper.execute("""
             var btn = document.getElementById('call_button');
