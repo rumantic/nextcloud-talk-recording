@@ -537,6 +537,7 @@ class Participant():
 
 
     def afterJoin(self):
+        sleep(5)
         self.ffmpeg_proc = self.start_ffmpeg_stream(config.getStreamUrl())
 
 
