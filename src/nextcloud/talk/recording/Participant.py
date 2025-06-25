@@ -536,7 +536,7 @@ class Participant():
         thread = threading.Thread(target=self.wait_for_empty_call_and_stop, args=(30, 10), daemon=True)
         thread.start()
 
-        # self.ffmpeg_proc = self.start_ffmpeg_stream(config.getStreamUrl())
+        self.ffmpeg_proc = self.start_ffmpeg_stream(config.getStreamUrl())
 
 
 
