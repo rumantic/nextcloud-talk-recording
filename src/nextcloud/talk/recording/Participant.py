@@ -494,7 +494,7 @@ class Participant():
     def joinCallviaButtons (self):
         # Ждем появления кнопки и кликаем по ней
         from time import sleep
-        sleep(2)  # Лучше заменить на явное ожидание через Selenium, если потребуется
+        sleep(5)  # Лучше заменить на явное ожидание через Selenium, если потребуется
 
         self.seleniumHelper.execute("""
             var btn = document.getElementById('call_button');
@@ -535,6 +535,7 @@ class Participant():
         ''')
         thread = threading.Thread(target=self.wait_for_empty_call_and_stop, args=(30, 10), daemon=True)
         thread.start()
+        self.ffmpeg_proc = self.start_ffmpeg_stream(config.getStreamUrl())
 
 
 
@@ -546,7 +547,6 @@ class Participant():
 
         :param token: the token of the room to join.
         """
-        self.ffmpeg_proc = self.start_ffmpeg_stream(config.getStreamUrl())
         self.token = token
 
 
