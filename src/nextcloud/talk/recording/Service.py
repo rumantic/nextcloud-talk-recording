@@ -224,7 +224,7 @@ class Service:
 
             # Log recorder output.
             Thread(target=processLog, args=[f"{__name__}.recorder-{self.backend}-{self.token}", self._process.stdout], daemon=True).start()
-            self.postProcessor()
+            # self.postProcessor()
 
             if self._stopped.is_set():
                 # Not strictly needed, as if the recorder is started after the
