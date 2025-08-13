@@ -9,6 +9,10 @@ src/nextcloud/talk/recording/Participant.py
 src/nextcloud/talk/recording/RecorderArgumentsBuilder.py
 src/nextcloud/talk/recording/Server.py
 src/nextcloud/talk/recording/Service.py
+src/nextcloud/talk/recording/WebAutomationMain.py
+src/nextcloud/talk/recording/WebAutomationServer.py
+src/nextcloud/talk/recording/WebAutomationService.py
+src/nextcloud/talk/recording/WebNavigator.py
 src/nextcloud/talk/recording/__init__.py
 src/nextcloud/talk/recording/__main__.py
 src/nextcloud_talk_recording.egg-info/PKG-INFO

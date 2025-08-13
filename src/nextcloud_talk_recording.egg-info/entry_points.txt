@@ -1,3 +1,4 @@
 [console_scripts]
 nextcloud-talk-recording = nextcloud.talk.recording.__main__:main
 nextcloud-talk-recording-benchmark = nextcloud.talk.recording.Benchmark:main
+web-automation-server = nextcloud.talk.recording.WebAutomationMain:main

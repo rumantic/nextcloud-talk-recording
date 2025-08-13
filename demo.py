@@ -21,7 +21,7 @@ def demo():
     # Create session with a simple test page
     print("\n2. Creating automation session...")
     session_data = {
-        "url": "https://httpbin.org/forms/post"
+        "url": "https://estate.sitebill.ru/admin/"
     }
     
     response = requests.post(f"{base_url}/api/v1/session", json=session_data)
@@ -53,8 +53,8 @@ def demo():
     # Test login functionality (will try to fill form if found)
     print("\n5. Testing login functionality...")
     login_data = {
-        "username": "demo-user",
-        "password": "demo-password"
+        "username": "admin",
+        "password": "admin"
     }
     response = requests.post(f"{base_url}/api/v1/session/{session_id}/login", json=login_data)
     login_result = response.json()

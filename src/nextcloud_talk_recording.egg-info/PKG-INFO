@@ -1,7 +1,7 @@
 Metadata-Version: 2.4
 Name: nextcloud-talk-recording
 Version: 0.1
-Summary: Recording server for Nextcloud Talk
+Summary: Web automation server based on Nextcloud Talk Recording
 Author: Nextcloud Talk Team
 License: GNU AGPLv3+
 Project-URL: repository, https://github.com/nextcloud/nextcloud-talk-recording
@@ -9,13 +9,8 @@ Classifier: License :: OSI Approved :: GNU Affero General Public License v3 or l
 License-File: LICENSE.txt
 License-File: AUTHORS.md
 Requires-Dist: flask
-Requires-Dist: prometheus-client
-Requires-Dist: psutil
-Requires-Dist: pulsectl
 Requires-Dist: pyvirtualdisplay>=2.0
-Requires-Dist: requests-toolbelt
 Requires-Dist: selenium>=4.6.0
-Requires-Dist: websocket-client
 Provides-Extra: dev
 Requires-Dist: pylint>=2.9; extra == "dev"
 Requires-Dist: pytest>=6.0.1; extra == "dev"
