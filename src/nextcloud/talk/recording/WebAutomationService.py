@@ -11,9 +11,19 @@ import logging
 import os
 from threading import Event
 from pyvirtualdisplay import Display
+import traceback
+import platform
 
 from .Config import config
 from .WebNavigator import WebNavigator
+
+# Настройка логирования: сохранять все логи в файл webautomation.log в каталоге приложения
+log_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..', 'webautomation.log')
+logging.basicConfig(
+    filename=log_path,
+    level=logging.DEBUG,
+    format='%(asctime)s %(levelname)s %(name)s: %(message)s'
+)
 
 
 class SeleniumHelper:
@@ -131,33 +141,40 @@ class WebAutomationService:
     def start(self, url, username=None, password=None):
         self._logger.debug(f"Starting web automation session for url={url}, username={username}")
         try:
-            self._logger.debug(f"Step: Get video size from config")
+            self._logger.debug("Step: Get video size from config - starting")
             width = config.getBackendVideoWidth("default") or 1920
             height = config.getBackendVideoHeight("default") or 1080
             self._logger.debug(f"Video size: width={width}, height={height}")
 
-            self._logger.debug(f"Step: Create virtual display")
-            self._display = Display(size=(width, height), manage_global_env=False)
-            self._display.start()
-            self._logger.debug("Virtual display started")
+            if platform.system() != "Windows":
+                self._logger.debug("Step: Create virtual display - starting")
+                self._display = Display(size=(width, height), manage_global_env=False)
+                self._logger.debug("Display object created, calling start()")
+                self._display.start()
+                self._logger.debug("Virtual display started")
+                env = self._display.env()
+            else:
+                self._logger.debug("Windows detected, skipping virtual display setup")
+                self._display = None
+                env = {}  # Для Windows используем пустой env
 
             if self._stopped.is_set():
                 self._logger.debug("Session was stopped before display start")
                 raise Exception("Display started after session was stopped")
 
-            env = self._display.env()
-            self._logger.debug(f"Step: Get browser config")
+            self._logger.debug(f"Step: Get browser config - starting")
             browser = config.getBrowserForRecording() or 'firefox'
             driverPath = config.getDriverPathForRecording()
             browserPath = config.getBrowserPathForRecording()
             self._logger.debug(f"Browser: {browser}, driverPath: {driverPath}, browserPath: {browserPath}")
 
-            self._logger.debug(f"Step: Initialize SeleniumHelper")
+            self._logger.debug("Step: Initialize SeleniumHelper - starting")
             acceptInsecureCerts = config.getBackendSkipVerify("default") or False
             self._logger.debug(f"acceptInsecureCerts: {acceptInsecureCerts}")
             self._seleniumHelper = SeleniumHelper(self._logger, acceptInsecureCerts)
+            self._logger.debug("SeleniumHelper initialized")
 
-            self._logger.debug(f"Step: Start browser")
+            self._logger.debug("Step: Start browser - starting")
             if browser == 'chrome':
                 self._logger.debug(f"Starting Chrome with width={width}, height={height}, env={env}, driverPath={driverPath}, browserPath={browserPath}")
                 self._seleniumHelper.startChrome(width, height, env, driverPath, browserPath)
@@ -174,15 +191,16 @@ class WebAutomationService:
                 self._logger.debug("Session was stopped before browser start")
                 raise Exception("Browser started after session was stopped")
 
-            self._logger.debug("Step: Create WebNavigator")
+            self._logger.debug("Step: Create WebNavigator - starting")
             self._webNavigator = WebNavigator(self._seleniumHelper, self._logger)
+            self._logger.debug("WebNavigator created")
 
-            self._logger.debug(f"Step: Navigate to URL: {url}")
+            self._logger.debug(f"Step: Navigate to URL: {url} - starting")
             self._webNavigator.navigateToUrl(url)
             self._logger.debug(f"Navigation to {url} complete")
 
             if username and password:
-                self._logger.debug(f"Step: Perform login with username={username}")
+                self._logger.debug(f"Step: Perform login with username={username} - starting")
                 loginSuccess = self._webNavigator.performLogin(username, password)
                 if loginSuccess:
                     self._logger.info("Login attempted successfully")
@@ -195,7 +213,7 @@ class WebAutomationService:
             self._logger.info(f"Web automation session started successfully for URL: {url}")
 
         except Exception as e:
-            self._logger.error(f"Exception during session start: {e}")
+            self._logger.error(f"Exception during session start: {e}\n{traceback.format_exc()}")
             self._stopHelpers()
             raise
 
