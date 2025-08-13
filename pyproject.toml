@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 [project]
 name = "nextcloud-talk-recording"
-description = "Recording server for Nextcloud Talk"
+description = "Web automation server based on Nextcloud Talk Recording"
 authors = [
     { name = "Nextcloud Talk Team" },
 ]
@@ -12,13 +12,8 @@ classifiers = [
 ]
 dependencies = [
     "flask",
-    "prometheus-client",
-    "psutil",
-    "pulsectl",
     "pyvirtualdisplay>=2.0",
-    "requests-toolbelt",
     "selenium>=4.6.0",
-    "websocket-client",
 ]
 dynamic = ["version"]
 
@@ -38,6 +33,7 @@ repository = "https://github.com/nextcloud/nextcloud-talk-recording"
 [project.scripts]
 nextcloud-talk-recording = "nextcloud.talk.recording.__main__:main"
 nextcloud-talk-recording-benchmark = "nextcloud.talk.recording.Benchmark:main"
+web-automation-server = "nextcloud.talk.recording.WebAutomationMain:main"
 
 [tool.setuptools.dynamic]
 version = {attr = "nextcloud.talk.recording.__version__"}

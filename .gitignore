@@ -1,2 +1,21 @@
 /.idea
 server.conf
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+build/
+dist/
+
+# Browser automation
+geckodriver.log
+chromedriver.log
+debug.log
+
+# Temporary files
+screenshots/
+*.png
+*.jpg
+*.jpeg
