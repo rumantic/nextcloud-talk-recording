@@ -1,0 +1,12 @@
+flask
+prometheus-client
+psutil
+pulsectl
+pyvirtualdisplay>=2.0
+requests-toolbelt
+selenium>=4.6.0
+websocket-client
+
+[dev]
+pylint>=2.9
+pytest>=6.0.1
