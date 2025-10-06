@@ -1,0 +1,7 @@
+flask
+pyvirtualdisplay>=2.0
+selenium>=4.6.0
+
+[dev]
+pylint>=2.9
+pytest>=6.0.1
